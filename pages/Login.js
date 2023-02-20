@@ -9,45 +9,48 @@ const Login = ({ navigation }) => {
     const [org_id, setOrg_id] = useState(0);
 
 
-    const handleLogin = () => {
-        if (!email || !password) {
-            console.error('Both email and password are required');
-            return;
-        }
-        const fetchAccountandOrganizer = async () => {
-            try {
-                const response = await fetch('http://192.168.8.100:8000/api/accounts/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ email, password })
-                });
+    const handleLogin = async () => {
+        try {
+            const response = await fetch('http://192.168.8.100:8000/api/accounts/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            });
 
-                if (!response.ok) {
-                    throw new Error('Invalid email or password');
-                }
-
-                const accountId = await response.json();
-
-                //fetch the organizer id by the account id//
-
-                console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1\\n\n\n')
-                console.log(accountId)
-
-               const response2 = await fetch(`http://192.168.8.100:8000/api/organizers/account/${accountId}`);
-                const organizer = await response2.json();
-                console.log(organizer)
-
-                 navigation.navigate('Events', { org_id: organizer.org_id });
-            } catch (error) {
-                console.error('Failed to login', error);
-                // display error message to the user
+            if (!response.ok) {
+                throw new Error('Invalid email or password');
             }
-        };
 
-        fetchAccountandOrganizer();
+            const accountId = await response.json();
+            const organizer = await fetchOrganizer(accountId);
+            console.log(organizer)
+            navigateToEvents(organizer.org_id);
+        } catch (error) {
+            displayError(error);
+        }
     };
+
+    const fetchOrganizer = async (accountId) => {
+        const response = await fetch(`http://192.168.8.100:8000/api/organizers/account/${accountId}`);
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch organizer');
+        }
+
+        return response.json();
+    };
+
+    const navigateToEvents = (orgId) => {
+        navigation.navigate('Events', { org_id: orgId });
+    };
+
+    const displayError = (error) => {
+        console.error('Failed to login', error);
+        // display error message to the user
+    };
+
 
 
     return (

@@ -13,13 +13,13 @@ export default function BarCodeScannerApp({ route, navigation }) {
         const fetchTickets = async () => {
             console.log('-----------------------------')
             setEventId(route.params.event_id);
-            console.log(route.params.event_id);
+            // console.log(route.params.event_id);
 
             const response = await fetch(`http://192.168.8.100:8000/api/tickets/event/${route.params.event_id}`);
             const data = await response.json();
             setTickets(data);
             console.log(data)
-            console.log(data.length)
+            // console.log(data.length)
             console.log('===================end=====================');
         };
         fetchTickets();
@@ -33,14 +33,16 @@ export default function BarCodeScannerApp({ route, navigation }) {
 
     const handleBarCodeScanned = ({ type, data }) => {
         setScanned(true);
-        const isValid = tickets.some(ticket => ticket.qrcode === data);
-        if (isValid) {
-            alert(`Ticket is valid!\ntype : ${type}\n data : ${data}`);
-        } else {
-            alert(`Ops! Ticket is invalid!?????\ntype : ${type}\n data : ${data}`);
-        }
 
-        // alert(`type : ${type}\n data : ${data}`);
+        const ticket = tickets.find((ticketObj) => ticketObj.qrcode === data);
+        // const isValid = tickets.some((ticketObj) => ticketObj.qrcode === data);
+        if (!ticket) {
+            alert(`Ops! Ticket is invalid !\n data : ${data}`);
+        } else if (ticket.isscanned === true) {
+            alert(`Repeated Ticket !\n data : ${data}`);
+        } else {
+            alert(`Yes Ticket is valid !\n data : ${data}`);
+        }
     };
 
     if (hasPermission === null) {

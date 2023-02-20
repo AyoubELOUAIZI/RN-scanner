@@ -22,7 +22,7 @@ const EventsList = ({ route, navigation }) => {
 
     return (
         <View style={styles.container}>
-            {console.log('%%%%%%%%%%%%%%%  First  %%%%%%%%%%%%%%%%')}
+            {/* {console.log('%%%%%%%%%%%%%%%  First  %%%%%%%%%%%%%%%%')} */}
             <Text style={styles.title}>Event Titles</Text>
             <FlatList
                 data={events}
