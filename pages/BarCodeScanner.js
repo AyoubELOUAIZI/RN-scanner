@@ -8,20 +8,49 @@ export default function BarCodeScannerApp({ route, navigation }) {
     const [tickets, setTickets] = useState([]);
     const [eventId, setEventId] = useState(1);
 
+    function UpdateTicket(ticketId) {
+        fetch(`https://e-ticket-server.onrender.com/api/tickets/${ticketId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                isscanned: true
+            })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Resource updated successfully:', data);
+                console.log('ffffffffffffffffffffffffffffffffffffffffffffff');
+                console.log(data)
+                console.log('ffffffffffffffffffffffffffffffffffffffffffffff');
+            })
+            .catch(error => {
+                console.error('There was a problem updating the resource:', error);
+            });
+
+    }
+
+    const fetchTickets = async () => {
+        console.log('-------------****----------------')
+        setEventId(route.params.event_id);
+        console.log(route.params.event_id);
+
+        const response = await fetch(`https://e-ticket-server.onrender.com/api/tickets/event/${route.params.event_id}`);
+        const data = await response.json();
+        setTickets(data);
+        console.log(data)
+        // console.log(data.length)
+        console.log('===================end=====================');
+    };
 
     useEffect(() => {
-        const fetchTickets = async () => {
-            console.log('-----------------------------')
-            setEventId(route.params.event_id);
-            // console.log(route.params.event_id);
 
-            const response = await fetch(`http://192.168.8.100:8000/api/tickets/event/${route.params.event_id}`);
-            const data = await response.json();
-            setTickets(data);
-            console.log(data)
-            // console.log(data.length)
-            console.log('===================end=====================');
-        };
         fetchTickets();
 
         const getBarCodeScannerPermissions = async () => {
@@ -42,6 +71,9 @@ export default function BarCodeScannerApp({ route, navigation }) {
             alert(`Repeated Ticket !\n data : ${data}`);
         } else {
             alert(`Yes Ticket is valid !\n data : ${data}`);
+            console.log(ticket)
+            UpdateTicket(ticket.ticket_id);
+            fetchTickets();
         }
     };
 
