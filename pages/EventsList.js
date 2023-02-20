@@ -6,23 +6,18 @@ const EventsList = ({ route, navigation }) => {
     const [org_id, setOrg_id] = useState(1);
 
     useEffect(() => {
-        console.log('------------------------------')
         setOrg_id(route.params.org_id);
         console.log(org_id);
         const fetchEvents = async () => {
             const response = await fetch(`https://e-ticket-server.onrender.com/api/organizers/${route.params.org_id}`);
             const data = await response.json();
             setEvents(data.Events);
-            // console.log(events)
-            console.log('===================end=====================');
         };
-
         fetchEvents();
     }, []);
 
     return (
         <View style={styles.container}>
-            {/* {console.log('%%%%%%%%%%%%%%%  First  %%%%%%%%%%%%%%%%')} */}
             <Text style={styles.title}>Event Titles</Text>
             <FlatList
                 data={events}

@@ -45,8 +45,6 @@ export default function BarCodeScannerApp({ route, navigation }) {
         const data = await response.json();
         setTickets(data);
         console.log(data)
-        // console.log(data.length)
-        console.log('===================end=====================');
     };
 
     useEffect(() => {

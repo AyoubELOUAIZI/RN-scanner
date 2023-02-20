@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-// import EventsList from './EventsList ';
-// import { useNavigation } from '@react-navigation/native';
 
 const Login = ({ navigation }) => {
     const [email, setEmail] = useState('');
