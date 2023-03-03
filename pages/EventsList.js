@@ -9,7 +9,7 @@ const EventsList = ({ route, navigation }) => {
         setOrg_id(route.params.org_id);
         console.log(org_id);
         const fetchEvents = async () => {
-            const response = await fetch(`https://e-ticket-server.onrender.com/api/organizers/${route.params.org_id}`);
+            const response = await fetch(`https://e-ticket-server.onrender.com/api/scanner/organizers/${route.params.org_id}`);
             const data = await response.json();
             setEvents(data.Events);
         };

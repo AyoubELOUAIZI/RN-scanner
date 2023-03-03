@@ -9,7 +9,7 @@ export default function BarCodeScannerApp({ route, navigation }) {
     const [eventId, setEventId] = useState(1);
 
     function UpdateTicket(ticketId) {
-        fetch(`https://e-ticket-server.onrender.com/api/tickets/${ticketId}`, {
+        fetch(`https://e-ticket-server.onrender.com/api/scanner/tickets/${ticketId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -41,7 +41,7 @@ export default function BarCodeScannerApp({ route, navigation }) {
         setEventId(route.params.event_id);
         console.log(route.params.event_id);
 
-        const response = await fetch(`https://e-ticket-server.onrender.com/api/tickets/event/${route.params.event_id}`);
+        const response = await fetch(`https://e-ticket-server.onrender.com/api/scanner/tickets/event/${route.params.event_id}`);
         const data = await response.json();
         setTickets(data);
         console.log(data)

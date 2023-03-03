@@ -9,7 +9,7 @@ const Login = ({ navigation }) => {
 
     const handleLogin = async () => {
         try {
-            const response = await fetch('https://e-ticket-server.onrender.com/api/accounts/login', {
+            const response = await fetch('https://e-ticket-server.onrender.com/api/scanner/accounts/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -22,6 +22,7 @@ const Login = ({ navigation }) => {
             }
 
             const accountId = await response.json();
+            console.log(accountId)
             const organizer = await fetchOrganizer(accountId);
             console.log(organizer)
             navigateToEvents(organizer.org_id);
@@ -31,7 +32,7 @@ const Login = ({ navigation }) => {
     };
 
     const fetchOrganizer = async (accountId) => {
-        const response = await fetch(`https://e-ticket-server.onrender.com/api/organizers/account/${accountId}`);
+        const response = await fetch(`https://e-ticket-server.onrender.com/api/scanner/organizers/account/${accountId}`);
 
         if (!response.ok) {
             throw new Error('Failed to fetch organizer');
